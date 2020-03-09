@@ -30,7 +30,7 @@ dependencies {
     implementation androidXDependencies.values()
     implementation navigationDependencies.values()
 //    implementation networkDependencies.values()
-//    implementation injectionDependencies.values()
+    implementation injectionDependencies.values()
 
     // TEST
     testImplementation 'junit:junit:4.12'
