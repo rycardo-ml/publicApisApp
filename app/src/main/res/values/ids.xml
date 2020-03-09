@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item type="id" name="nav_main_home" />
+    <item type="id" name="nav_main_search" />
+    <item type="id" name="nav_main_favorite" />
+    <item type="id" name="nav_main_settings" />
+
+</resources>
