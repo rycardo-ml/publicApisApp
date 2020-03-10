@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.apis.R
 import com.example.apis.misc.sharedpreferences.ApisPreferences
 import org.koin.android.ext.android.inject
+import org.koin.core.KoinComponent
 
 private const val TAG = "SettingsFragment"
 class SettingsFragment: Fragment() {

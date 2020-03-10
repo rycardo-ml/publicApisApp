@@ -1,7 +1,9 @@
 package com.example.apis.misc
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.multidex.MultiDex
 import com.example.apis.misc.di.KoinModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -17,6 +19,11 @@ class ApisApplication: Application() {
         Log.d(TAG, "onCreate")
 
         initKoin()
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     private fun initKoin() {

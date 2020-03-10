@@ -1,56 +1,63 @@
 ext {
 
-    def volleyVersion = '1.1.1'
-    def retrofitVersion = '2.3.0'
-    def okHttpVersion = '3.9.1'
+    def volley_version = '1.1.1'
+    def retrofit_version = '2.3.0'
+    def okHttp_version = '3.9.1'
+    def gson_version = '2.8.5'
 
-    def koinVersion= "2.1.3"
+    def multidex_version = "2.0.1"
 
-    def navigationVersion = "1.0.0"
-    ext.lifecycle_version = "2.2.0-alpha02"
+    def koin_version= "2.1.3"
+
+    def navigation_version = "1.0.0"
+    def lifecycle_version = "2.2.0"
 
     kotlinDependencies = [
             kotlin   : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
     ]
 
-    androidXDependencies = [
+    androidDependencies = [
             legacy                  : 'androidx.legacy:legacy-support-v4:1.0.0',
             appCompat               : 'androidx.appcompat:appcompat:1.1.0',
             coreKtx                 : 'androidx.core:core-ktx:1.2.0',
             constraintLayout        : 'androidx.constraintlayout:constraintlayout:1.1.3',
 
-
             lifecycleVM             : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
             lifecycleLD             : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
+
+            multidex                : "androidx.multidex:multidex:$multidex_version",
     ]
 
     navigationDependencies = [
-            navigationFrg           : "android.arch.navigation:navigation-fragment-ktx:$navigationVersion",
-            navigationUI            : "android.arch.navigation:navigation-ui-ktx:$navigationVersion",
+            navigationFrg           : "android.arch.navigation:navigation-fragment-ktx:$navigation_version",
+            navigationUI            : "android.arch.navigation:navigation-ui-ktx:$navigation_version",
     ]
 
     injectionDependencies = [
 
             //koin
-            koinAndroid             : "org.koin:koin-android:$koinVersion",
-            koinCore                : "org.koin:koin-core:$koinVersion",
-            koinCoreExt             : "org.koin:koin-core-ext:$koinVersion",
+            koinAndroid             : "org.koin:koin-android:$koin_version",
+            koinCore                : "org.koin:koin-core:$koin_version",
+            koinCoreExt             : "org.koin:koin-core-ext:$koin_version",
     ]
 
     networkDependencies = [
 
+            // gson
+            gson                    : "com.google.code.gson:gson:${gson_version}",
+
             // volley
-            volley                  : "com.android.volley:volley:${volleyVersion}",
+            volley                  : "com.android.volley:volley:${volley_version}",
 
             // retrofit
-            retrofit                : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
-            retrofitGsonConverter   : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
-            retrofitRxJavaAdapter   : "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}",
+            retrofit                : "com.squareup.retrofit2:retrofit:${retrofit_version}",
+            retrofitGsonConverter   : "com.squareup.retrofit2:converter-gson:${retrofit_version}",
+            retrofitRxJavaAdapter   : "com.squareup.retrofit2:adapter-rxjava2:${retrofit_version}",
 
 
             // okHttp
-            okHttp3                 : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
-            okHttp3Logging          : "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
+            okHttp3                 : "com.squareup.okhttp3:okhttp:${okHttp_version}",
+            okHttp3Logging          : "com.squareup.okhttp3:logging-interceptor:${okHttp_version}",
     ]
 
 

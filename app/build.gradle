@@ -13,6 +13,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,9 +28,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation kotlinDependencies.values()
-    implementation androidXDependencies.values()
+    implementation androidDependencies.values()
     implementation navigationDependencies.values()
-//    implementation networkDependencies.values()
+    implementation networkDependencies.values()
     implementation injectionDependencies.values()
 
     // TEST

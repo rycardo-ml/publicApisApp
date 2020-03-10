@@ -5,11 +5,12 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.example.apis.misc.webservice.WebServiceType
 import com.example.apis.misc.webservice.getWebServiceTypeById
+import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.ext.scope
 
 private const val TAG = "ApisPreferencesImpl"
-class ApisPreferencesImpl: ApisPreferences {
+class ApisPreferencesImpl: ApisPreferences, KoinComponent {
 
     private val context: Context by inject()
     private val preferences: SharedPreferences = context.getSharedPreferences("MY_PREFERENCES", Context.MODE_PRIVATE)
