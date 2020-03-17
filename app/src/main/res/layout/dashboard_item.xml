@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.apis.misc.ui.DashboardItem
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintWidth_min="48dp"
+    app:layout_constraintHeight_min="48dp"
+    app:layout_constraintHeight_max="88dp"
+    app:layout_constraintWidth_max="88dp"
+    app:layout_constraintWidth_percent=".3">
+
+</com.example.apis.misc.ui.DashboardItem>
