@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">PublicApisApp</string>
+
+    <string name="frg_home_opt1">Enviar Dinheiro</string>
+    <string name="frg_home_opt2">Cartoes MB NET</string>
+    <string name="frg_home_opt3">Pagar com MB WAY</string>
+    <string name="frg_home_opt4">Pedir Dinheiro</string>
+    <string name="frg_home_opt5">Dividir Conta</string>
+    <string name="frg_home_opt6">Levantar Dinheiro</string>
+    <string name="frg_home_opt7">Utilizar MULTIBANCO</string>
+    <string name="frg_home_opt8">Ser Solidario</string>
 </resources>

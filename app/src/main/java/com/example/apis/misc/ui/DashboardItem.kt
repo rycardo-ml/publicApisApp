@@ -1,24 +1,31 @@
 package com.example.apis.misc.ui
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.*
+import androidx.core.content.res.getResourceIdOrThrow
+import androidx.core.content.res.getStringOrThrow
+import androidx.core.widget.TextViewCompat
 import com.example.apis.R
 
 
-class DashboardItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0): ConstraintLayout(context, attrs, defStyle) {
+class DashboardItem @JvmOverloads constructor(context: Context, val attrs: AttributeSet? = null, defStyle: Int = 0): ConstraintLayout(context, attrs, defStyle) {
 
     private lateinit var title: AppCompatTextView
     private lateinit var image: AppCompatImageView
 
+    private lateinit var titleText: String
+    private var imageResource: Int = 0
+
     init {
+        fetchAttributes()
+
         setupViews()
         setupConstraintsBetweenViews()
     }
@@ -31,10 +38,10 @@ class DashboardItem @JvmOverloads constructor(context: Context, attrs: Attribute
     private fun setupImage() {
         image = AppCompatImageView(context)
         image.id = View.generateViewId()
-//        image.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-        image.layoutParams = LayoutParams(0, 0)
-
-        image.setImageResource(R.drawable.ic_envelope)
+        image.layoutParams = LayoutParams(0, 0).apply {
+            topMargin = 10
+        }
+        image.setImageResource(imageResource)
 
         addView(image)
         configureImageConstraints()
@@ -43,10 +50,15 @@ class DashboardItem @JvmOverloads constructor(context: Context, attrs: Attribute
     private fun setupTitle() {
         title = AppCompatTextView(context)
         title.id = View.generateViewId()
-        title.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        title.layoutParams = LayoutParams(0,0).apply {
+            bottomMargin = 10
+            leftMargin = 10
+            rightMargin = 10
+        }
         title.gravity = Gravity.CENTER
-
-        title.text = "Option text"
+        title.textSize = resources.getDimension(R.dimen.txt_normal)
+        title.text = titleText
+        TextViewCompat.setAutoSizeTextTypeWithDefaults(title, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
 
         addView(title)
         configureTitleConstraints()
@@ -93,43 +105,12 @@ class DashboardItem @JvmOverloads constructor(context: Context, attrs: Attribute
         set.applyTo(this)
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    private fun fetchAttributes() {
+        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.DashboardItem, 0, 0)
 
-        val minValue = Math.min(getParentWidth(), getParentHeight())
-        val itemSize: Int = minValue / 3
+        titleText = typedArray.getStringOrThrow(R.styleable.DashboardItem_title)
+        imageResource = typedArray.getResourceIdOrThrow(R.styleable.DashboardItem_image)
 
-        val maxSize = Math.min(maxWidth, maxHeight)
-        val minSize = Math.min(minWidth, minHeight)
-
-        if (itemSize > maxSize) {
-            setMeasuredDimension(maxSize, maxSize)
-            return
-        }
-
-        if (itemSize < minSize) {
-            setMeasuredDimension(minSize, minSize)
-            return
-        }
-
-        setMeasuredDimension(itemSize, itemSize)
-    }
-
-    private fun getParentHeight(): Int {
-        val parentView = (parent as View)
-
-        val padding = parentView.paddingTop + parentView.paddingBottom
-        val margin = parentView.marginTop + parentView.marginBottom
-
-        return parentView.measuredHeight - padding - margin
-    }
-
-    private fun getParentWidth(): Int {
-        val parentView = (parent as View)
-
-        val padding = parentView.paddingStart + parentView.paddingEnd
-        val margin = parentView.marginLeft + parentView.marginRight
-
-        return parentView.measuredWidth - padding - margin
+        typedArray.recycle()
     }
 }
