@@ -1,21 +1,22 @@
-package com.example.apis.misc.ui
+package pt.sibs.android.mbway.mobileui.components.cardbuttonsmosaic
 
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.graphics.Typeface
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.content.res.getStringOrThrow
 import androidx.core.widget.TextViewCompat
 import com.example.apis.R
 
-
-class DashboardItem @JvmOverloads constructor(context: Context, val attrs: AttributeSet? = null, defStyle: Int = 0): ConstraintLayout(context, attrs, defStyle) {
+class DashboardItem @JvmOverloads constructor(context: Context, val attrs: AttributeSet? = null, defStyle: Int = 0) : ConstraintLayout(context, attrs, defStyle) {
 
     private lateinit var title: AppCompatTextView
     private lateinit var image: AppCompatImageView
@@ -28,20 +29,25 @@ class DashboardItem @JvmOverloads constructor(context: Context, val attrs: Attri
 
         setupViews()
         setupConstraintsBetweenViews()
+
+        setPadding(
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, resources.displayMetrics).toInt(),
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15f, resources.displayMetrics).toInt(),
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, resources.displayMetrics).toInt(),
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics).toInt()
+        )
     }
 
     private fun setupViews() {
         setupImage()
         setupTitle()
-     }
+    }
 
     private fun setupImage() {
         image = AppCompatImageView(context)
         image.id = View.generateViewId()
-        image.layoutParams = LayoutParams(0, 0).apply {
-            topMargin = 10
-        }
         image.setImageResource(imageResource)
+        image.layoutParams = LayoutParams(0, 0)
 
         addView(image)
         configureImageConstraints()
@@ -50,15 +56,20 @@ class DashboardItem @JvmOverloads constructor(context: Context, val attrs: Attri
     private fun setupTitle() {
         title = AppCompatTextView(context)
         title.id = View.generateViewId()
-        title.layoutParams = LayoutParams(0,0).apply {
-            bottomMargin = 10
-            leftMargin = 10
-            rightMargin = 10
+        title.layoutParams = LayoutParams(0, 0).apply {
+            topMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, resources.displayMetrics).toInt()
         }
+
         title.gravity = Gravity.CENTER
-        title.textSize = resources.getDimension(R.dimen.txt_normal)
         title.text = titleText
-        TextViewCompat.setAutoSizeTextTypeWithDefaults(title, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+
+        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+            title,
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 11f, resources.displayMetrics).toInt(),
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics).toInt(),
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, resources.displayMetrics).toInt(),
+            TypedValue.COMPLEX_UNIT_PX
+        )
 
         addView(title)
         configureTitleConstraints()

@@ -1,26 +1,35 @@
-package com.example.apis.misc.ui
+package pt.sibs.android.mbway.mobileui.components.cardbuttonsmosaic
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
+import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.*
+import androidx.core.view.children
 import com.example.apis.R
 
-class Dashboard @JvmOverloads constructor(context: Context, val attrs: AttributeSet? = null, defStyle: Int = 0): ConstraintLayout(context, attrs, defStyle) {
+open class Dashboard @JvmOverloads constructor(context: Context, val attrs: AttributeSet? = null, defStyle: Int = 0) : ConstraintLayout(context, attrs, defStyle) {
 
     private var minItemsSize: Int = 0
     private var maxItemsSize: Int = 0
 
+    private val globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        removeObserver()
+        resizeChild()
+    }
+
     init {
         fetchAttributes()
-        Log.d("melo", "init drawable with item ${childCount}")
+        viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+    }
+
+    private fun removeObserver() {
+        viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        Log.d("melo", "onMeasure drawable with item ${childCount}")
 
+        if (!isInEditMode) return
         resizeChild()
     }
 
@@ -28,7 +37,7 @@ class Dashboard @JvmOverloads constructor(context: Context, val attrs: Attribute
         val itemSize = getItemsSize()
 
         children.iterator().forEach {
-           val lp =  (it.layoutParams as LayoutParams?) ?: LayoutParams(0,0)
+            val lp = (it.layoutParams as LayoutParams?) ?: LayoutParams(0, 0)
 
             lp.height = itemSize
             lp.width = itemSize
@@ -49,31 +58,33 @@ class Dashboard @JvmOverloads constructor(context: Context, val attrs: Attribute
 
     private fun getParentHeight(): Int {
         val padding = paddingTop + paddingBottom
-        return measuredHeight - padding - getVerticalMargin()
+
+        var margin = 0
+        children.iterator().forEach {
+            margin += (it.layoutParams as LayoutParams).topMargin + it.paddingTop
+            margin += (it.layoutParams as LayoutParams).bottomMargin + it.paddingBottom
+        }
+
+        return measuredHeight - padding - (margin / 3)
     }
 
     private fun getParentWidth(): Int {
-        val padding = paddingStart + paddingEnd
-        return measuredWidth - padding - getHorizontalMargin()
-    }
+        val padding = paddingLeft + paddingRight
 
-    private fun getHorizontalMargin(): Int {
-        val lp = (layoutParams as LayoutParams?) ?: return 0
+        var margin = 0
+        children.iterator().forEach {
+            margin += (it.layoutParams as LayoutParams).leftMargin + it.paddingLeft
+            margin += (it.layoutParams as LayoutParams).rightMargin + it.paddingRight
+        }
 
-        return lp.rightMargin + lp.leftMargin
-    }
-
-    private fun getVerticalMargin(): Int {
-        val lp = (layoutParams as LayoutParams?) ?: return 0
-
-        return lp.topMargin + lp.bottomMargin
+        return measuredWidth - padding - (margin / 3)
     }
 
     private fun fetchAttributes() {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.Dashboard, 0, 0)
 
-        minItemsSize = typedArray.getDimensionPixelSize(R.styleable.Dashboard_minItemsSize, 0)
-        maxItemsSize = typedArray.getDimensionPixelSize(R.styleable.Dashboard_maxItemsSize, 0)
+        minItemsSize = typedArray.getDimension(R.styleable.Dashboard_minItemsSize, 0f).toInt()
+        maxItemsSize = typedArray.getDimension(R.styleable.Dashboard_maxItemsSize, 0f).toInt()
 
         typedArray.recycle()
     }
