@@ -1,9 +1,10 @@
-package com.example.apis
+package com.example.apis.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.apis.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // https://medium.com/koin-developers/ready-for-koin-2-0-2722ab59cac3

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.ListPreference
+        android:title="Http client"
+        android:summary="Select the client to be used in http connections"
+        android:key="downloadType"
+        android:defaultValue="@string/sp_http_client_default"
+        android:entries="@array/sp_http_client_items"
+        android:entryValues="@array/sp_http_client_values" />
+
+</androidx.preference.PreferenceScreen>

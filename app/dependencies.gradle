@@ -12,6 +12,8 @@ ext {
     def navigation_version = "1.0.0"
     def lifecycle_version = "2.2.0"
 
+    def preference_version = "1.1.1"
+
     kotlinDependencies = [
             kotlin   : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
     ]
@@ -26,6 +28,8 @@ ext {
             lifecycleLD             : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
 
             multidex                : "androidx.multidex:multidex:$multidex_version",
+
+            preferences             : "androidx.preference:preference-ktx:$preference_version"
     ]
 
     navigationDependencies = [

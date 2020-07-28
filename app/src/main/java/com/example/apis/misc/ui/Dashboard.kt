@@ -1,4 +1,4 @@
-package pt.sibs.android.mbway.mobileui.components.cardbuttonsmosaic
+package com.example.apis.misc.ui
 
 import android.content.Context
 import android.util.AttributeSet

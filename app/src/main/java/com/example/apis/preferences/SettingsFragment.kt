@@ -1,25 +1,25 @@
-package com.example.apis.settings
+package com.example.apis.preferences
 
 import android.os.Bundle
+import android.preference.PreferenceFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceFragmentCompat
 import com.example.apis.R
 import com.example.apis.misc.sharedpreferences.ApisPreferences
 import org.koin.android.ext.android.inject
-import org.koin.core.KoinComponent
 
-private const val TAG = "SettingsFragment"
-class SettingsFragment: Fragment() {
+private const val TAG = "PreferencesFragment"
+class SettingsFragment: PreferenceFragmentCompat() {
 
     val preferences by inject<ApisPreferences>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
         Log.d(TAG, "onCreateView $preferences")
-
-        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
+
 }
