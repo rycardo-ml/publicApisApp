@@ -17,6 +17,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 // http://fabcoding.com/design-an-easy-simple-elegant-onboarding-screen-using-recyclerview/
 
 // https://github.com/public-apis/public-apis
+// https://dev.to/paulodhiambo/kotlin-and-retrofit-network-calls-2353 [movies api]
+
+
+// https://medium.com/@harmittaa/retrofit-2-6-0-with-koin-and-coroutines-4ff45a4792fc
 
 class MainActivity : AppCompatActivity() {
 

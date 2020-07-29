@@ -1,4 +1,4 @@
-package com.example.apis.misc.pojo
+package com.example.apis.misc.models
 
 class User {
 

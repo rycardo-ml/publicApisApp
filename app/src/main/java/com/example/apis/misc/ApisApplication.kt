@@ -40,7 +40,8 @@ class ApisApplication: Application() {
         Log.d(TAG, "initModules application[${this@ApisApplication}]" )
 
         koinApplication.modules(listOf(
-            KoinModules.mainModule
+            KoinModules.mainModule,
+            KoinModules.retrofitWeatherModules
         ))
     }
 }

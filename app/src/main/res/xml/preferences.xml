@@ -2,12 +2,19 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.preference.ListPreference
-        android:title="Http client"
-        android:summary="Select the client to be used in http connections"
-        android:key="downloadType"
-        android:defaultValue="@string/sp_http_client_default"
-        android:entries="@array/sp_http_client_items"
-        android:entryValues="@array/sp_http_client_values" />
+    <PreferenceCategory
+        android:title="HTTP Connections"
+        android:icon="@drawable/ic_http_connection">
+
+        <androidx.preference.ListPreference
+            android:title="Client to be used:"
+            android:summary="%s"
+            android:key="@string/sp_http_client"
+            android:defaultValue="@string/sp_http_client_default"
+            android:entries="@array/sp_http_client_items"
+            android:entryValues="@array/sp_http_client_values" />
+
+    </PreferenceCategory>
+
 
 </androidx.preference.PreferenceScreen>
