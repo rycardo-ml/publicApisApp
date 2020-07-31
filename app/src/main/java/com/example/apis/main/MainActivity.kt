@@ -6,6 +6,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.apis.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.reactivex.Observable
+import io.reactivex.ObservableSource
+import io.reactivex.functions.Function
 
 // https://medium.com/koin-developers/ready-for-koin-2-0-2722ab59cac3
 // https://medium.com/@harmittaa/setting-up-koin-2-0-1-for-android-ebf11de01816
@@ -21,6 +24,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 // https://medium.com/@harmittaa/retrofit-2-6-0-with-koin-and-coroutines-4ff45a4792fc
+
+
+// https://medium.com/mobile-app-development-publication/mastering-kotlin-standard-functions-run-with-let-also-and-apply-9cd334b0ef84
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +48,21 @@ class MainActivity : AppCompatActivity() {
 
         //OPEN IN THIS MENU
         //bottomNavigationView.selectedItemId = R.id.nav_main_settings
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+
+
+
+    }
+
+    private fun teste(): Observable<Int> {
+        return Observable.just("FOO")
+            .flatMap {
+                Observable.just(1)
+            }
     }
 }
 
