@@ -7,4 +7,10 @@
     <dimen name="txt_small">12sp</dimen>
     <dimen name="txt_warning">11sp</dimen>
 
+
+    <dimen name="clickable_textView_padding">8dp</dimen>
+    <dimen name="corner_home_card">32dp</dimen>
+
+
+
 </resources>

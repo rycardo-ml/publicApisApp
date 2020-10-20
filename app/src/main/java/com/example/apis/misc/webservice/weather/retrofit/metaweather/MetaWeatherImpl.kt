@@ -1,5 +1,6 @@
 package com.example.apis.misc.webservice.weather.retrofit.metaweather
 
+import android.os.SystemClock
 import android.util.Log
 import com.example.apis.misc.webservice.weather.WeatherAPI
 import com.example.apis.misc.webservice.weather.WeatherException
@@ -10,6 +11,8 @@ import com.example.apis.misc.webservice.weather.model.WindDirection
 import com.example.apis.misc.webservice.weather.model.metaweather.MetaWeatherForecast
 import com.example.apis.misc.webservice.weather.model.metaweather.MetaWeatherLocation
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "MetaWeatherImpl"
@@ -17,7 +20,9 @@ class MetaWeatherImpl(val retrofit: MetaWeatherRetrofit): WeatherAPI {
 
     override fun get5DaysWeather(latitude: Double, longitude: Double): Observable<List<WeatherData>> {
         return getLocation(latitude, longitude)
+                .subscribeOn(Schedulers.io())
                 .flatMap{ location ->
+                    //SystemClock.sleep(((Math.random() * 3) * 1000 * 5).toLong())
                     getWeather(location)
                 }
     }
@@ -84,7 +89,9 @@ class MetaWeatherImpl(val retrofit: MetaWeatherRetrofit): WeatherAPI {
 
         val result = mutableListOf<WeatherData>()
 
-        forecast.consolidated_weather.forEach {
+        forecast.consolidated_weather.forEachIndexed { index, it ->
+            if (index == 5) return@forEachIndexed
+
             val latLng = forecast.latt_long.split(",")
 
             result.add(WeatherData(
@@ -92,7 +99,7 @@ class MetaWeatherImpl(val retrofit: MetaWeatherRetrofit): WeatherAPI {
                 latLng[0].toDouble(),
                 latLng[1].toDouble(),
                 getWeatherState(it.weather_state_abbr),
-                it.applicable_date,
+                SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(it.applicable_date)!!,
                 it.the_temp,
                 it.min_temp,
                 it.max_temp,

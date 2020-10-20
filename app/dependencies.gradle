@@ -1,5 +1,8 @@
 ext {
 
+    def rxkotlin_version = '2.4.0'
+    def rxandroid_version = '2.0.2'
+
     def volley_version = '1.1.1'
     def retrofit_version = '2.3.0'
     def okHttp_version = '3.9.1'
@@ -16,6 +19,8 @@ ext {
 
     kotlinDependencies = [
             kotlin   : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+            rxKotlin : "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version",
+            rxAndroid: "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     ]
 
     androidDependencies = [

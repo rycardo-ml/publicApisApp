@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextView.Retry" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/selector_error_retry</item>
+        <item name="android:text">Retry</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
 </resources>

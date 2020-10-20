@@ -9,10 +9,8 @@ import org.koin.core.scope.Scope
 class RetrofitWeather(type: WeatherType): KoinComponent {
     private val TAG = "RetrofitWeather"
 
-    private val scope: Scope = getKoin().createScope("${type.scope}_id", named(type.scope))
+    private val scope: Scope = getKoin().getOrCreateScope("${type.scope}_id", named(type.scope))
     val api by scope.inject<WeatherAPI>()
-
-
 
     fun close() {
         scope.close()

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/colorErrorBackground" />
+            <stroke android:width="2dip" android:color="#eeecec"/>
+            <corners android:radius="8dp"/>
+            <padding
+                android:left="@dimen/clickable_textView_padding"
+                android:top="@dimen/clickable_textView_padding"
+                android:right="@dimen/clickable_textView_padding"
+                android:bottom="@dimen/clickable_textView_padding" />
+        </shape>
+    </item>
+</layer-list>

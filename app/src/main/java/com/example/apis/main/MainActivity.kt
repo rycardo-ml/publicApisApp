@@ -52,10 +52,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-
-
-
     }
 
     private fun teste(): Observable<Int> {

@@ -9,7 +9,6 @@ import com.example.apis.misc.webservice.weather.retrofit.metaweather.MetaWeather
 import com.example.apis.misc.webservice.weather.retrofit.metaweather.RetrofitMetaWeatherBuilder
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.koin.ext.getOrCreateScope
 
 object KoinModules {
 
@@ -19,6 +18,20 @@ object KoinModules {
 
     val retrofitWeatherModules = module {
         scope(named(WeatherType.META_WEATHER.scope)) {
+            factory { RetrofitMetaWeatherBuilder.provideOkHttpClient() }
+            factory { RetrofitMetaWeatherBuilder.provideApi(get()) }
+            scoped { RetrofitMetaWeatherBuilder.provideRetrofit(get()) }
+            scoped<WeatherAPI> { MetaWeatherImpl(get()) }
+        }
+
+        scope(named(WeatherType.OPEN_WEATHER.scope)) {
+            factory { RetrofitMetaWeatherBuilder.provideOkHttpClient() }
+            factory { RetrofitMetaWeatherBuilder.provideApi(get()) }
+            scoped { RetrofitMetaWeatherBuilder.provideRetrofit(get()) }
+            scoped<WeatherAPI> { MetaWeatherImpl(get()) }
+        }
+
+        scope(named(WeatherType.OTHER_WEATHER.scope)) {
             factory { RetrofitMetaWeatherBuilder.provideOkHttpClient() }
             factory { RetrofitMetaWeatherBuilder.provideApi(get()) }
             scoped { RetrofitMetaWeatherBuilder.provideRetrofit(get()) }
