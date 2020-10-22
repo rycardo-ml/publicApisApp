@@ -1,7 +1,7 @@
 package com.example.apis.misc.livedata
 
 class ListHolder<T>(val list: MutableList<T> = mutableListOf()) {
-    var indexChanged: Int = -1
+    var changedItems = mutableListOf<ChangedItem>()
     var type: ListHolderType = ListHolderType.FULL
 
     fun resetList(newList: List<T>) {
@@ -11,16 +11,22 @@ class ListHolder<T>(val list: MutableList<T> = mutableListOf()) {
         type = ListHolderType.FULL
     }
 
-    fun updateItem(filter: (T) -> Boolean, update: (T) -> Unit): Boolean {
-        val indexOf = list.indexOfFirst { filter.invoke(it) }
+    fun updateItem(indexOfItem: (List<T>) -> Int, update: (T) -> Unit): Boolean {
+        val indexOf = indexOfItem.invoke(list)
 
         if (indexOf == -1) return false
 
         update.invoke(list[indexOf])
 
-        indexChanged = indexOf
-        type = ListHolderType.UPDATE
+        changedItems.add(ChangedItem(indexOf, ChangedItemType.UPDATE))
+        type = ListHolderType.PARTIAL
 
         return true
     }
+
+    fun clearChangedItems() {
+        changedItems.clear()
+    }
+
+    fun get(index: Int): T = list[index]
 }

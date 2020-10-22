@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,6 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apis.R
+import com.example.apis.misc.ext.toDp
+import com.example.apis.misc.ext.toPx
 
 // https://medium.com/@supahsoftware/custom-android-views-carousel-recyclerview-7b9318d23e9a
 class CarouselRecyclerView@JvmOverloads constructor(context: Context, val attrs: AttributeSet? = null, defStyle: Int = 0): RecyclerView(context, attrs, defStyle) {
@@ -26,8 +29,12 @@ class CarouselRecyclerView@JvmOverloads constructor(context: Context, val attrs:
         newAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 post {
+
                     val sidePadding = (width / 2) - (getChildAt(0).width / 2)
-                    setPadding(sidePadding, 0, sidePadding, 0)
+                    setPadding(32.toPx, 16.toPx, 32.toPx, 16.toPx)
+
+
+
                     scrollToPosition(0)
                     addOnScrollListener(object : OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -47,8 +54,8 @@ class CarouselRecyclerView@JvmOverloads constructor(context: Context, val attrs:
                 val child = getChildAt(position)
                 val childCenterX = (child.left + child.right) / 2
                 val scaleValue = getGaussianScale(childCenterX, 1f, 1f, 150.toDouble())
-                child.scaleX = scaleValue
-                child.scaleY = scaleValue
+                //child.scaleX = scaleValue
+                //child.scaleY = scaleValue
                 colorView(child, scaleValue)
             }
         }

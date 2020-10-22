@@ -9,7 +9,7 @@
 
 
     <dimen name="clickable_textView_padding">8dp</dimen>
-    <dimen name="corner_home_card">32dp</dimen>
+    <dimen name="corner_home_card">16dp</dimen>
 
 
 

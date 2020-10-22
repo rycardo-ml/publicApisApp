@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.apis.misc.livedata.ListHolder
-import io.reactivex.Completable
-import io.reactivex.Observable
+import com.example.apis.misc.models.Category
+import com.example.apis.misc.models.EnumCategory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,71 +16,45 @@ class HomeViewModel: ViewModel() {
 
     private val disposable = CompositeDisposable()
 
-    private val weatherList = ListHolder<WeatherCarousel>()
-    private val weatherLD = MutableLiveData<ListHolder<WeatherCarousel>>()
+    private val categoryList = ListHolder<Category>()
+    private val categoryLD = MutableLiveData<ListHolder<Category>>()
+    private val categorySelectedLD = MutableLiveData<EnumCategory>()
 
-    private val weatherRepository = WeatherRepository()
+    private val categoryRepository = CategoryRepository()
+
 
     fun init() {
         Log.d(TAG, "HomeViewModel $this")
-        initWeather()
+        initCategories()
     }
 
-    private fun initWeather() {
+    fun updateSelectedCategory(selectedIndex: Int) {
+
+        categoryList.clearChangedItems()
+
+        categoryList.updateItem(
+            { items -> items.indexOfFirst { it.selected } },
+            { it.selected = false }
+        )
+
+        categoryList.updateItem(
+            { selectedIndex },
+            { it.selected = true }
+        )
+
+        categorySelectedLD.postValue(categoryList.get(selectedIndex).type)
+        categoryLD.postValue(categoryList)
+    }
+
+    private fun initCategories() {
         disposable.add(
-            weatherRepository.fetchOptions()
-                .subscribeOn(Schedulers.io())
+            categoryRepository.fetchOptions()
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        Log.d(TAG, "weather options ${it.size}")
-
-                        weatherList.resetList(it)
-                        weatherLD.postValue(weatherList)
-                        loadWeather()
-                    },
-                    { error ->
-                        error.printStackTrace()
-                    }
-                )
-        )
-    }
-
-    fun loadWeather() {
-        disposable.add(
-            Completable.create { emitter ->
-                Log.d(TAG, "WEATHER init foreach for calls")
-                weatherRepository.getEndPointsFor5DaysWeather(36.96, -122.02).forEach {
-                    Log.d(TAG, "fetching data")
-                    fetchWeatherData(it)
-                }
-
-                Log.d(TAG, "WEATHER end foreach for calls")
-                emitter.onComplete()
-            }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-        )
-    }
-
-    private fun fetchWeatherData(item: Observable<WeatherCarousel>) {
-        disposable.add(
-            item
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { wsItem ->
-                        Log.d(TAG, "WEATHER data fetched ${wsItem.type}")
-
-                        val isUpdated = weatherList.updateItem(
-                                            { it.type == wsItem.type },
-                                            { it.resetData(wsItem.data) }
-                                        )
-
-                        if (!isUpdated) return@subscribe
-
-                        weatherLD.postValue(weatherList)
+                        categoryList.resetList(it)
+                        categoryLD.postValue(categoryList)
                     },
                     { error ->
                         error.printStackTrace()
@@ -93,12 +67,11 @@ class HomeViewModel: ViewModel() {
 
     override fun onCleared() {
         Log.d(TAG, "onCleared $this")
-
         super.onCleared()
 
         disposable.dispose()
-        weatherRepository.closeConnections()
     }
 
-    fun getWeather(): LiveData<ListHolder<WeatherCarousel>> = weatherLD
+    fun getCategory(): LiveData<ListHolder<Category>> = categoryLD
+    fun getCategorySelected(): LiveData<EnumCategory> = categorySelectedLD
 }

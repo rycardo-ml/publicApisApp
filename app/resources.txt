@@ -1,12 +1,11 @@
 BACKGROUND
-    https://depositphotos.com/52640459/stock-illustration-christmas-snow-background.html
-
-
-
-
-
-
 
 ICONS
     https://www.flaticon.com/free-icon/global_1231223?term=WEB&page=1&position=4
+
+
+    WEATHER
+        SNOW
+        https://www.flaticon.com/free-icon/snow_2910065?term=snow&page=1&position=30
+
 

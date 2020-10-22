@@ -4,19 +4,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardCornerRadius="@dimen/corner_home_card"
-    tools:layout_margin="32dp">
+    android:layout_height="wrap_content">
 
     <include
         android:id="@+id/row_weather_lyt_loading"
         layout="@layout/layout_loading_card"
+        android:visibility="gone"
         tools:visibility="gone"/>
 
     <include
         android:id="@+id/row_weather_lyt_error"
         layout="@layout/layout_error_card"
-        tools:visibility="visible"/>
+        android:visibility="gone"
+        tools:visibility="gone"/>
 
+    <include
+        android:id="@+id/row_weather_lyt_data"
+        layout="@layout/layout_weather"
+        android:visibility="visible"
+        tools:visibility="visible" />
 
 </androidx.cardview.widget.CardView>

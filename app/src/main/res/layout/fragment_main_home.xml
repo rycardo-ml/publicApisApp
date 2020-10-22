@@ -6,34 +6,40 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/frg_mainHome_lb_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Categories"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lyt_mainHome_rv_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@id/frg_mainHome_lb_categories" />
+
+    <TextView
         android:id="@+id/frg_mainhome_lb_preferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:layout_margin="16dp"
+        android:padding="8dp"
         android:text="Preferences"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
-    <ProgressBar
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.example.apis.misc.ui.CarouselRecyclerView
-        android:id="@+id/frg_mainHome_crv_weather"
+    <FrameLayout
+        android:id="@+id/frg_mainHome_fl_details"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        app:layout_constraintTop_toBottomOf="@id/lyt_mainHome_rv_categories"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#fffff1"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
