@@ -9,6 +9,7 @@ import com.example.apis.misc.webservice.weather.model.WeatherData
 import com.example.apis.misc.webservice.weather.model.WeatherState
 import com.example.apis.misc.webservice.weather.model.WindDirection
 import com.example.apis.misc.webservice.weather.model.metaweather.MetaWeatherForecast
+import com.example.apis.misc.webservice.weather.model.metaweather.MetaWeatherForecastConsolidated
 import com.example.apis.misc.webservice.weather.model.metaweather.MetaWeatherLocation
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -18,28 +19,82 @@ import java.util.*
 private const val TAG = "MetaWeatherImpl"
 class MetaWeatherImpl(val retrofit: MetaWeatherRetrofit): WeatherAPI {
 
-    override fun get5DaysWeather(latitude: Double, longitude: Double): Observable<List<WeatherData>> {
+    override fun fetch5DaysWeather(latitude: Double, longitude: Double): Observable<List<WeatherData>> {
         return getLocation(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .flatMap{ location ->
                     //SystemClock.sleep(((Math.random() * 3) * 1000 * 5).toLong())
-                    getWeather(location)
+                    getWeatherFor5Days(location)
                 }
     }
 
-    override fun getDailyWeather(latitude: Double, longitude: Double): Observable<WeatherData> {
-        TODO("Not yet implemented")
+    override fun fetchDailyWeather(latitude: Double, longitude: Double): Observable<WeatherData> {
+        return fetchWeatherByDate(latitude, longitude, Date())
     }
 
-    override fun getWeatherByDate(latitude: Double, longitude: Double, date: Date): Observable<WeatherData> {
-        TODO("Not yet implemented")
+    override fun fetchWeatherByDate(latitude: Double, longitude: Double, date: Date): Observable<WeatherData> {
+        return getLocation(latitude, longitude)
+            .subscribeOn(Schedulers.io())
+            .flatMap{ location ->
+                SystemClock.sleep(((Math.random() * 3) * 1000 * 5).toLong())
+                getWeatherByDate(location, date)
+            }
     }
 
     override fun reload(weatherData: WeatherData): Observable<WeatherData> {
         TODO("Not yet implemented")
     }
 
-    private fun getWeather(location: MetaWeatherLocation): Observable<List<WeatherData>> {
+    private fun getWeatherByDate(location: MetaWeatherLocation, date: Date): Observable<WeatherData> {
+        return Observable.create { emitter ->
+            Log.d(TAG, "getWeatherByDate [${location.title} | ${location.woeid}] $date")
+
+            val calendar = fetchCalendar(date)
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH) + 1
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val response = retrofit.getWeatherByDay(location.woeid, year, month, day).execute()
+
+            if (!response.isSuccessful) {
+                emitter.onError(WeatherException(WeatherExceptionType.DETAILS, response.message()))
+                return@create
+            }
+
+            response.body().let { forecast ->
+
+                if (forecast == null) {
+                    emitter.onError(WeatherException(WeatherExceptionType.DETAILS_NOT_FOUND, "Forecast not found for ${location.title}"))
+                    return@create
+                }
+
+                val coordinates = location.latt_long.split(",")
+                val dailyResults = forecast.map {
+                    createWeatherData(location.title, coordinates, it)
+                }
+
+                if (dailyResults.isNullOrEmpty()) {
+                    emitter.onError(WeatherException(WeatherExceptionType.DETAILS_NOT_FOUND, "Forecast not found for ${location.title} on $date"))
+                    return@create
+                }
+
+                emitter.onNext(dailyResults[0])
+            }
+        }
+    }
+
+    private fun fetchCalendar(date: Date): Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.HOUR, 12)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar
+    }
+
+    private fun getWeatherFor5Days(location: MetaWeatherLocation): Observable<List<WeatherData>> {
         return Observable.create { emitter ->
             Log.d(TAG, "getWeather [${location.title} | ${location.woeid}]")
 
@@ -85,34 +140,37 @@ class MetaWeatherImpl(val retrofit: MetaWeatherRetrofit): WeatherAPI {
         }
     }
 
-    private fun processForecastResult(forecast: MetaWeatherForecast): List<WeatherData> {
+    private fun processForecastResult(forecast: MetaWeatherForecast, limit: Int = 5): List<WeatherData> {
 
         val result = mutableListOf<WeatherData>()
 
         forecast.consolidated_weather.forEachIndexed { index, it ->
-            if (index == 5) return@forEachIndexed
+            if (index == limit) return@forEachIndexed
 
             val latLng = forecast.latt_long.split(",")
-
-            result.add(WeatherData(
-                forecast.title,
-                latLng[0].toDouble(),
-                latLng[1].toDouble(),
-                getWeatherState(it.weather_state_abbr),
-                SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(it.applicable_date)!!,
-                it.the_temp,
-                it.min_temp,
-                it.max_temp,
-                getWindDirection(it.wind_direction_compass),
-                it.wind_speed,
-                it.air_pressure,
-                it.humidity,
-                it.visibility,
-                it.predictability
-            ))
+            result.add(createWeatherData(forecast.title, latLng, it))
         }
 
         return result
+    }
+
+    private fun createWeatherData(location: String, coordinates: List<String>, forecastConsolidated: MetaWeatherForecastConsolidated): WeatherData {
+        return WeatherData(
+            location,
+            coordinates[0].toDouble(),
+            coordinates[1].toDouble(),
+            getWeatherState(forecastConsolidated.weather_state_abbr),
+            SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(forecastConsolidated.applicable_date)!!,
+            forecastConsolidated.the_temp,
+            forecastConsolidated.min_temp,
+            forecastConsolidated.max_temp,
+            getWindDirection(forecastConsolidated.wind_direction_compass),
+            forecastConsolidated.wind_speed,
+            forecastConsolidated.air_pressure,
+            forecastConsolidated.humidity,
+            forecastConsolidated.visibility,
+            forecastConsolidated.predictability
+        )
     }
 
     private fun getWindDirection(direction: String): WindDirection {

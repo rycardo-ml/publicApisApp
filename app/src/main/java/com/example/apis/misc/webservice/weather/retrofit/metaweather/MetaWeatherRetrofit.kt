@@ -26,5 +26,5 @@ interface MetaWeatherRetrofit {
     fun getWeatherByDay(@Path("woeid") woeid: Long,
                         @Path("year") year: Int,
                         @Path("month") month: Int,
-                        @Path("day") day: Int): Call<MetaWeatherForecastConsolidated>
+                        @Path("day") day: Int): Call<List<MetaWeatherForecastConsolidated>>
 }

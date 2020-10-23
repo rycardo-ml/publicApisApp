@@ -39,16 +39,12 @@ class CategoriesAdapter(val clickCallback: (Int) -> Unit): RecyclerView.Adapter<
         private val transition = ResourcesCompat.getDrawable(itemView.resources, R.drawable.transition_category, itemView.context.theme) as TransitionDrawable
         private val tvDescription: TextView = itemView.findViewById(R.id.row_category_tv_description)
 
-        private var item: Category? = null
-
         init {
             transition.isCrossFadeEnabled = true
             configureClicks()
         }
 
         fun bind(item: Category) {
-            this.item = item
-
             tvDescription.text = item.type.description
             updateBackground(item.selected, true)
         }

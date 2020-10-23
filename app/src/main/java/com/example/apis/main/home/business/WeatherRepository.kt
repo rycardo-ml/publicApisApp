@@ -23,11 +23,21 @@ class WeatherRepository {
         }
     }
 
-    fun getEndPointsFor5DaysWeather(latitude: Double, longitude: Double):  List<Observable<WeatherCarousel>> {
+//    fun getEndPointsFor5DaysWeather(latitude: Double, longitude: Double):  List<Observable<WeatherCarousel>> {
+//        return items.values.map main@ { wrapper ->
+//            wrapper.retrofit.api.get5DaysWeather(latitude, longitude)
+//                .map inner@ {
+//                    wrapper.item.resetData(it)
+//                    return@inner wrapper.item
+//                }
+//        }
+//    }
+
+    fun getEndPointsForDailyWeather(latitude: Double, longitude: Double):  List<Observable<WeatherCarousel>> {
         return items.values.map main@ { wrapper ->
-            wrapper.retrofit.api.get5DaysWeather(latitude, longitude)
+            wrapper.retrofit.api.fetchDailyWeather(latitude, longitude)
                 .map inner@ {
-                    wrapper.item.resetData(it)
+                    wrapper.item.weather = it
                     return@inner wrapper.item
                 }
         }

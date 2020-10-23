@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_height="200dp">
+    tools:layout_height="match_parent">
 
     <View
         android:id="@+id/lyt_weather_vw_background"
@@ -15,18 +15,43 @@
         android:importantForAccessibility="no"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <TextView
+        android:id="@+id/lyt_weather_tv_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        tools:text="Lisboa" />
+
+    <TextView
+        android:id="@+id/lyt_weather_tv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-light"
+        app:layout_constraintTop_toBottomOf="@id/lyt_weather_tv_location"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        tools:text="Sunday 25th" />
+
     <ImageView
         android:id="@+id/lyt_weather_iv_state"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:importantForAccessibility="no"
         app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/ic_weather_snow"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lyt_weather_tv_date"
         app:layout_constraintBottom_toTopOf="@id/lyt_weather_tv_temperature"
         app:layout_constraintStart_toStartOf="@id/gl_start"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/lyt_weather_tv_temperature"
@@ -36,9 +61,11 @@
         android:textSize="48sp"
         android:text="-10º"
         android:fontFamily="sans-serif-thin"
+        app:layout_constraintTop_toBottomOf="@id/lyt_weather_iv_state"
         app:layout_constraintBottom_toTopOf="@id/lyt_weather_tv_source"
         app:layout_constraintStart_toStartOf="@id/gl_start"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <TextView
         android:id="@+id/lyt_weather_tv_source"

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.apis.misc.livedata.ListHolder
+import com.example.apis.misc.ui.CarouselStatus
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,7 +30,7 @@ class HomeWeatherViewModel: ViewModel() {
     private fun initWeather() {
         disposable.add(
             weatherRepository.fetchOptions()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
@@ -50,7 +51,7 @@ class HomeWeatherViewModel: ViewModel() {
         disposable.add(
             Completable.create { emitter ->
                 Log.d(TAG, "WEATHER init foreach for calls")
-                weatherRepository.getEndPointsFor5DaysWeather(36.96, -122.02).forEach {
+                weatherRepository.getEndPointsForDailyWeather(36.96, -122.02).forEach {
                     Log.d(TAG, "fetching data")
                     fetchWeatherData(it)
                 }
@@ -80,7 +81,10 @@ class HomeWeatherViewModel: ViewModel() {
                                     it.type == wsItem.type
                                 }
                             },
-                            { it.resetData(wsItem.data) }
+                            {
+                                it.weather = wsItem.weather
+                                it.status = CarouselStatus.LOADED
+                            }
                         )
 
                         if (!isUpdated) return@subscribe
